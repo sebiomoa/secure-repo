@@ -21,6 +21,7 @@ const RECOMMENDED_FILES = [
   { file: "SECURITY.md", category: "security", severity: "high" },
   { file: "AUTH.md", category: "security", severity: "high" },
   { file: "API.md", category: "security", severity: "high" },
+  { file: "ACCESSIBILITY.md", category: "accessibility", severity: "medium" },
   { file: "DATABASE.md", category: "security", severity: "medium" },
   { file: "DEPLOYMENT.md", category: "operations", severity: "medium" },
   { file: "INCIDENT_RESPONSE.md", category: "operations", severity: "medium" },
@@ -56,9 +57,10 @@ function printHelp() {
     --output   Output directory (default: current directory)
 
   Free templates (always included):
-    SECURITY.md   Secrets management, attack surface, enforced architecture
-    AUTH.md        Token handling, session rules, password policy, roles
-    API.md         Input validation, rate limiting, error handling
+    SECURITY.md       Secrets management, attack surface, enforced architecture
+    AUTH.md            Token handling, session rules, password policy, roles
+    API.md             Input validation, rate limiting, error handling
+    ACCESSIBILITY.md   WCAG compliance, semantic HTML, keyboard nav, screen readers
 
   Pro templates (purchase at https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH):
     30 additional files — templates, audit checklist, stack presets, examples
@@ -288,6 +290,7 @@ Read each of these files if they exist before making changes:
 - SECURITY.md — Secrets management, attack surface, enforced architecture
 - AUTH.md — Token handling, session rules, password policy, roles
 - API.md — Input validation, rate limiting, error handling
+- ACCESSIBILITY.md — WCAG compliance, semantic HTML, keyboard navigation, screen readers
 
 ### Extended
 - DATABASE.md — Query safety, access control, migrations

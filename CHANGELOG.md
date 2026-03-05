@@ -6,14 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.2.0] - 2026-03-05
+
+### Added
+- `ACCESSIBILITY.md` — Free template for WCAG 2.1 AA compliance: semantic HTML, keyboard navigation, screen readers, color contrast, font sizes, touch targets
+
+---
+
 ## [1.1.0] - 2026-03-05
 
 ### Added
 - AI agent instruction files — `npx secure-repo init` now generates config files for **Claude**, **Cursor**, **GitHub Copilot**, **Windsurf**, and **Cline** so agents automatically read and follow your security policies
-- Server-side pro download proxy — license keys are validated without exposing tokens
-
-### Fixed
-- License validation now accepts both `active` and `granted` status from Polar
 
 ---
 

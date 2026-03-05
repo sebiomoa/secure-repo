@@ -47,6 +47,12 @@ npx github:sebiomoa/shipsecure audit
 
 Zero setup. Zero dependencies. Just run it.
 
+**Don't use the terminal?** Just tell your AI agent:
+
+> Run `npx github:sebiomoa/shipsecure audit` in my project
+
+Works with Cursor, Claude Code, Windsurf, Copilot — any AI coding agent that can run commands.
+
 ---
 
 ## The Problem

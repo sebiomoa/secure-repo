@@ -48,6 +48,7 @@ function printHelp() {
     npx github:sebiomoa/shipsecure import <file>     Import pro templates from a zip file (offline)
     npx github:sebiomoa/shipsecure check             Check which templates are outdated
     npx github:sebiomoa/shipsecure list              Show available free templates
+    npx github:sebiomoa/shipsecure upgrade            See what's in the pro pack
 
   Options:
     --key      Your license key (from purchase)
@@ -330,8 +331,11 @@ async function init() {
     console.log("\n  Next steps:");
     console.log("    1. Customize the templates for your project");
     console.log("    2. Run: npx github:sebiomoa/shipsecure audit");
-    console.log("    3. Get pro templates: npx github:sebiomoa/shipsecure init --key <your-key>");
-    console.log("       Purchase at: https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH");
+    console.log("\n  ────────────────────────────────────");
+    console.log("  Want 27 more files? Database, deployment, incident response,");
+    console.log("  payments, access control, 100+ point audit checklist & more.");
+    console.log("\n  Run: npx github:sebiomoa/shipsecure upgrade");
+    console.log("  ────────────────────────────────────");
     console.log();
   }
 }
@@ -524,6 +528,18 @@ function audit() {
     console.log("\n  Looking good! Your repo meets basic security standards.");
   }
 
+  // Pro upsell after audit — mention missing pro files
+  const proOnlyFiles = ["DATABASE.md", "DEPLOYMENT.md", "INCIDENT_RESPONSE.md", "ENV_VARIABLES.md",
+    "OBSERVABILITY.md", "TESTING.md", "PAYMENTS.md", "DATA_PRIVACY.md", "FILE_UPLOADS.md",
+    "RATE_LIMITING.md", "ACCESS_CONTROL.md", "LOGGING_PII.md"];
+  const missingProFiles = proOnlyFiles.filter((f) => !fs.existsSync(path.join(targetDir, f)));
+  if (missingProFiles.length > 0) {
+    console.log("\n  ────────────────────────────────────");
+    console.log(`  Want deeper coverage? The pro pack adds ${missingProFiles.length} more policy files:`);
+    console.log(`    ${missingProFiles.slice(0, 4).join(", ")}${missingProFiles.length > 4 ? `, +${missingProFiles.length - 4} more` : ""}`);
+    console.log("  Run: npx github:sebiomoa/shipsecure upgrade");
+  }
+
   console.log();
   return issues;
 }
@@ -560,6 +576,39 @@ function check() {
 }
 
 // ============================================================
+// UPGRADE — show pro info and purchase link
+// ============================================================
+function upgrade() {
+  console.log(`
+  shipsecure pro — 27 additional files for complete coverage
+
+  What's included:
+    18 policy templates   DATABASE.md, DEPLOYMENT.md, INCIDENT_RESPONSE.md,
+                          OBSERVABILITY.md, TESTING.md, ENV_VARIABLES.md,
+                          PAYMENTS.md, DATA_PRIVACY.md, FILE_UPLOADS.md,
+                          RATE_LIMITING.md, THIRD_PARTY.md, ACCESS_CONTROL.md,
+                          LOGGING_PII.md, PR_CHECKLIST.md, THREAT_MODEL.md,
+                          VULNERABILITY_REPORTING.md, CONTRIBUTING_SECURITY.md,
+                          POLICY_INDEX.md
+
+    Premium audit         FULL_AUDIT_CHECKLIST.md (100+ point security audit)
+
+    Stack presets         supabase/ (6 files), firebase/ (3 files)
+
+    Code examples         next-route-handler.ts, rate-limit.ts, zod-validate.ts,
+                          supabase-rls.sql, firebase-rules.txt
+
+  ────────────────────────────────────
+  Get the pro pack:
+  https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH
+
+  After purchase, install with:
+  npx github:sebiomoa/shipsecure init --key <your-license-key>
+  ────────────────────────────────────
+  `);
+}
+
+// ============================================================
 // Main
 // ============================================================
 switch (command) {
@@ -577,6 +626,10 @@ switch (command) {
     break;
   case "check":
     check();
+    break;
+  case "upgrade":
+  case "pro":
+    upgrade();
     break;
   case "help":
   case "--help":

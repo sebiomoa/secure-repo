@@ -42,12 +42,12 @@ function printHelp() {
   shipsecure - Production-grade security standards for your repo
 
   Usage:
-    npx shipsecure init              Add free security templates
-    npx shipsecure init --key <key>  Add free + pro templates (requires license key)
-    npx shipsecure audit             Scan your repo for security issues
-    npx shipsecure import <file>     Import pro templates from a zip file (offline)
-    npx shipsecure check             Check which templates are outdated
-    npx shipsecure list              Show available free templates
+    npx github:sebiomoa/secure-repo init              Add free security templates
+    npx github:sebiomoa/secure-repo init --key <key>  Add free + pro templates (requires license key)
+    npx github:sebiomoa/secure-repo audit             Scan your repo for security issues
+    npx github:sebiomoa/secure-repo import <file>     Import pro templates from a zip file (offline)
+    npx github:sebiomoa/secure-repo check             Check which templates are outdated
+    npx github:sebiomoa/secure-repo list              Show available free templates
 
   Options:
     --key      Your license key (from purchase)
@@ -61,7 +61,7 @@ function printHelp() {
 
   Pro templates (purchase at https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH):
     30 additional files — templates, audit checklist, stack presets, examples
-    Install with: npx shipsecure init --key <your-license-key>
+    Install with: npx github:sebiomoa/secure-repo init --key <your-license-key>
   `);
 }
 
@@ -309,11 +309,11 @@ async function init() {
       console.log(`\n  Done! ${totalCopied} files installed, ${totalSkipped} skipped.`);
       console.log("\n  Next steps:");
       console.log("    1. Customize the templates for your project");
-      console.log("    2. Run: npx shipsecure audit");
+      console.log("    2. Run: npx github:sebiomoa/secure-repo audit");
       console.log();
     } catch (err) {
       console.log(`\n  Download failed: ${err.message}`);
-      console.log("  Try offline install: npx shipsecure import <zip-file>\n");
+      console.log("  Try offline install: npx github:sebiomoa/secure-repo import <zip-file>\n");
       process.exit(1);
     } finally {
       // Clean up downloaded zip
@@ -329,8 +329,8 @@ async function init() {
     console.log(`\n  Done! ${result.copied} files added, ${result.skipped} skipped.`);
     console.log("\n  Next steps:");
     console.log("    1. Customize the templates for your project");
-    console.log("    2. Run: npx shipsecure audit");
-    console.log("    3. Get pro templates: npx shipsecure init --key <your-key>");
+    console.log("    2. Run: npx github:sebiomoa/secure-repo audit");
+    console.log("    3. Get pro templates: npx github:sebiomoa/secure-repo init --key <your-key>");
     console.log("       Purchase at: https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH");
     console.log();
   }
@@ -343,8 +343,8 @@ function importPack() {
   const zipPath = args[1];
 
   if (!zipPath) {
-    console.log("\n  Usage: npx shipsecure import <path-to-zip>\n");
-    console.log("  Offline alternative to: npx shipsecure init --key <key>");
+    console.log("\n  Usage: npx github:sebiomoa/secure-repo import <path-to-zip>\n");
+    console.log("  Offline alternative to: npx github:sebiomoa/secure-repo init --key <key>");
     console.log("  Get the pro pack at: https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH\n");
     return;
   }
@@ -517,7 +517,7 @@ function audit() {
 
   if (issues > 0) {
     console.log(`\n  ${issues} issue(s) found. Fix these before shipping.`);
-    console.log("  Run: npx shipsecure init    (adds missing policy files)");
+    console.log("  Run: npx github:sebiomoa/secure-repo init    (adds missing policy files)");
   } else if (warnings > 0) {
     console.log("\n  No critical issues. Some improvements recommended.");
   } else {

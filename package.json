@@ -1,0 +1,34 @@
+{
+  "name": "secure-repo",
+  "version": "1.0.0",
+  "description": "Drop production-grade security standards into any repo. Audit your repo for security issues. Templates for AI-assisted development.",
+  "bin": {
+    "secure-repo": "./bin/cli.js"
+  },
+  "keywords": [
+    "security",
+    "audit",
+    "templates",
+    "saas",
+    "nextjs",
+    "supabase",
+    "firebase",
+    "production",
+    "standards",
+    "authentication",
+    "api-security",
+    "security-audit",
+    "checklist",
+    "devtools",
+    "ai-coding"
+  ],
+  "author": "sebiomoa",
+  "license": "MIT",
+  "files": [
+    "bin/",
+    "templates/free/"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}

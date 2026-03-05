@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.local
+.env.production
+.env.*.local
+.DS_Store
+
+# Pro pack — NOT included in public repo
+# This is the paid product. Sold separately.
+pro-pack/

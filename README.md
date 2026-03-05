@@ -1,9 +1,9 @@
-# Secure Repo
+# ShipSecure
 
 **Drop production-grade security standards into any repository in 30 seconds.**
 
 ```bash
-npx secure-repo init
+npx shipsecure init
 ```
 
 That's it. Your repo now has battle-tested security policies, checklists, and enforcement rules used in real production SaaS applications.
@@ -15,11 +15,11 @@ That's it. Your repo now has battle-tested security policies, checklists, and en
 Not sure where you stand? Run an instant security audit:
 
 ```bash
-npx secure-repo audit
+npx shipsecure audit
 ```
 
 ```
-  secure-repo audit
+  shipsecure audit
 
   Scanning repository for security issues...
 
@@ -42,7 +42,7 @@ npx secure-repo audit
   ────────────────────────────────────
 
   3 issue(s) found. Fix these before shipping.
-  Run: npx secure-repo init
+  Run: npx shipsecure init
 ```
 
 Zero setup. Zero dependencies. Just run it.
@@ -61,11 +61,11 @@ You're building a SaaS app. You know you should have security policies, but:
 ## The Solution
 
 ```bash
-npx secure-repo init
+npx shipsecure init
 ```
 
 ```
-  secure-repo - Adding production standards to your project
+  shipsecure - Adding production standards to your project
 
   Free templates:
     [done] SECURITY.md
@@ -149,7 +149,7 @@ Each file includes:
 After purchase, install with one command:
 
 ```bash
-npx secure-repo init --key <your-license-key>
+npx shipsecure init --key <your-license-key>
 ```
 
 ---
@@ -157,12 +157,12 @@ npx secure-repo init --key <your-license-key>
 ## Commands
 
 ```bash
-npx secure-repo init              # Add free security templates
-npx secure-repo init --key <key>  # Add free + pro templates (with license key)
-npx secure-repo audit             # Scan your repo for security issues
-npx secure-repo import <zip>      # Import pro templates from zip (offline)
-npx secure-repo check             # Check if your templates are outdated
-npx secure-repo list              # Show all available templates
+npx shipsecure init              # Add free security templates
+npx shipsecure init --key <key>  # Add free + pro templates (with license key)
+npx shipsecure audit             # Scan your repo for security issues
+npx shipsecure import <zip>      # Import pro templates from zip (offline)
+npx shipsecure check             # Check if your templates are outdated
+npx shipsecure list              # Show all available templates
 ```
 
 ---
@@ -191,13 +191,13 @@ When an AI agent sees `SECURITY.md` in your project root, it follows those rules
 
 **With policy files:** The agent follows your standards. Every generated endpoint validates input, checks auth, and handles errors safely.
 
-Secure Repo gives your AI agents the rules they need to write production-safe code.
+ShipSecure gives your AI agents the rules they need to write production-safe code.
 
 ---
 
 ## Support This Project
 
-If Secure Repo helps you ship safer software, consider [sponsoring development](https://github.com/sponsors/sebiomoa).
+If ShipSecure helps you ship safer software, consider [sponsoring development](https://github.com/sponsors/sebiomoa).
 
 ---
 

@@ -482,6 +482,29 @@ function importPack() {
 // ============================================================
 // AUDIT — scan repo for security issues (the viral command)
 // ============================================================
+function checkForUpdate() {
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => resolve(null), 3000);
+    https.get("https://registry.npmjs.org/secure-repo/latest", (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", () => {
+        clearTimeout(timeout);
+        try {
+          const latest = JSON.parse(data).version;
+          const pkg = require("../package.json");
+          resolve(latest !== pkg.version ? latest : null);
+        } catch {
+          resolve(null);
+        }
+      });
+    }).on("error", () => {
+      clearTimeout(timeout);
+      resolve(null);
+    });
+  });
+}
+
 function audit() {
   const targetDir = getArg("--output") || process.cwd();
 
@@ -496,7 +519,7 @@ function audit() {
   // Score weights (total = 100)
   const SCORE_WEIGHTS = {
     policyHigh: 10,    // 4 high-severity files × 10 = 40
-    policyMedium: 5,   // 3 medium-severity files × 5 = 15
+    policyMedium: 5,   // 4 medium-severity files × 5 = 20
     gitignoreEnv: 10,  // .env in .gitignore
     noEnvFiles: 10,    // no committed .env files
     envExample: 5,     // .env.example exists
@@ -664,7 +687,16 @@ function audit() {
     console.log("  Run: npx secure-repo upgrade");
   }
 
-  console.log();
+  // Check for newer version (non-blocking)
+  checkForUpdate().then((latest) => {
+    if (latest) {
+      console.log(`\n  Update available: v${latest} (you have v${require("../package.json").version})`);
+      console.log("  Run: npx secure-repo@latest init\n");
+    } else {
+      console.log();
+    }
+  });
+
   return issues;
 }
 

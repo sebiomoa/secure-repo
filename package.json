@@ -1,6 +1,6 @@
 {
   "name": "secure-repo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Drop production-grade security standards into any repo. Audit your repo for security issues. Templates for AI-assisted development.",
   "bin": {
     "secure-repo": "./bin/cli.js"

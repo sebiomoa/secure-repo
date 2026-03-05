@@ -160,6 +160,7 @@ npx github:sebiomoa/shipsecure init --key <your-license-key>
 npx github:sebiomoa/shipsecure init              # Add free security templates
 npx github:sebiomoa/shipsecure init --key <key>  # Add free + pro templates (with license key)
 npx github:sebiomoa/shipsecure audit             # Scan your repo for security issues
+npx github:sebiomoa/shipsecure upgrade           # See what's in the pro pack
 npx github:sebiomoa/shipsecure import <zip>      # Import pro templates from zip (offline)
 npx github:sebiomoa/shipsecure check             # Check if your templates are outdated
 npx github:sebiomoa/shipsecure list              # Show all available templates

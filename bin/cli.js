@@ -10,7 +10,8 @@ const FREE_DIR = path.join(TEMPLATES_DIR, "free");
 
 const POLAR_ORGANIZATION_ID = "d55baa70-3a94-4549-901a-2b4c920ff122";
 
-const PRO_ZIP_URL = "https://github.com/sebiomoa/shipsecure/releases/latest/download/shipsecure-pro.zip";
+// Pro download endpoint (server-side proxy — token never ships in client code)
+const PRO_DOWNLOAD_URL = "https://shipsecure.app/api/download-pro";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -173,37 +174,40 @@ function verifyLicense(licenseKey) {
 }
 
 // ============================================================
-// Download file from URL
+// Download pro zip via server-side proxy
 // ============================================================
-function downloadFile(url, destPath) {
+function downloadProZip(destPath, licenseKey) {
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(destPath);
+    const parsed = new URL(PRO_DOWNLOAD_URL);
+    const postData = JSON.stringify({ license_key: licenseKey });
+    const opts = {
+      hostname: parsed.hostname,
+      path: parsed.pathname,
+      method: "POST",
+      headers: {
+        "User-Agent": "secure-repo-cli",
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(postData),
+      },
+    };
 
-    function follow(url) {
-      https.get(url, (res) => {
-        // Follow redirects
-        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          follow(res.headers.location);
-          return;
-        }
-
-        if (res.statusCode !== 200) {
-          reject(new Error(`Download failed (HTTP ${res.statusCode})`));
-          return;
-        }
-
-        res.pipe(file);
-        file.on("finish", () => {
-          file.close();
-          resolve();
+    const req = https.request(opts, (res) => {
+      if (res.statusCode !== 200) {
+        let body = "";
+        res.on("data", (chunk) => (body += chunk));
+        res.on("end", () => {
+          reject(new Error(`Download failed (HTTP ${res.statusCode}): ${body}`));
         });
-      }).on("error", (err) => {
-        fs.unlink(destPath, () => {});
-        reject(new Error(`Download error: ${err.message}`));
-      });
-    }
+        return;
+      }
+      const file = fs.createWriteStream(destPath);
+      res.pipe(file);
+      file.on("finish", () => { file.close(); resolve(); });
+    });
 
-    follow(url);
+    req.on("error", (err) => reject(new Error(`Network error: ${err.message}`)));
+    req.write(postData);
+    req.end();
   });
 }
 
@@ -300,7 +304,7 @@ async function init() {
     console.log("\n  Downloading pro templates...");
 
     try {
-      await downloadFile(PRO_ZIP_URL, zipPath);
+      await downloadProZip(zipPath, licenseKey);
       const proResult = installFromZip(zipPath, outputDir, force);
 
       const totalCopied = freeResult.copied + proResult.copied;

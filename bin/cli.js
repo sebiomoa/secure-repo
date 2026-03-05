@@ -8,7 +8,7 @@ const { execSync } = require("child_process");
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 const FREE_DIR = path.join(TEMPLATES_DIR, "free");
 
-const POLAR_ORGANIZATION_ID = "f2fdb373-79d2-431b-848a-a5d697a29561";
+const POLAR_ORGANIZATION_ID = "d55baa70-3a94-4549-901a-2b4c920ff122";
 
 const PRO_ZIP_URL = "https://github.com/sebiomoa/secure-repo/releases/latest/download/secure-repo-pro.zip";
 
@@ -59,7 +59,7 @@ function printHelp() {
     AUTH.md        Token handling, session rules, password policy, roles
     API.md         Input validation, rate limiting, error handling
 
-  Pro templates (purchase at https://polar.sh/sebiomoa):
+  Pro templates (purchase at https://polar.sh/third-space-labs):
     30 additional files — templates, audit checklist, stack presets, examples
     Install with: npx secure-repo init --key <your-license-key>
   `);
@@ -92,7 +92,7 @@ function listTemplates() {
   console.log("    next-route-handler.ts, rate-limit.ts, zod-validate.ts");
   console.log("    supabase-rls.sql, firebase-rules.txt");
 
-  console.log("\n  Get pro: https://polar.sh/sebiomoa\n");
+  console.log("\n  Get pro: https://polar.sh/third-space-labs\n");
 }
 
 function getArg(flag) {
@@ -287,7 +287,7 @@ async function init() {
       console.log("  License valid!\n");
     } catch (err) {
       console.log(`\n  License verification failed: ${err.message}`);
-      console.log("  Purchase at: https://polar.sh/sebiomoa\n");
+      console.log("  Purchase at: https://polar.sh/third-space-labs\n");
       process.exit(1);
     }
 
@@ -331,7 +331,7 @@ async function init() {
     console.log("    1. Customize the templates for your project");
     console.log("    2. Run: npx secure-repo audit");
     console.log("    3. Get pro templates: npx secure-repo init --key <your-key>");
-    console.log("       Purchase at: https://polar.sh/sebiomoa");
+    console.log("       Purchase at: https://polar.sh/third-space-labs");
     console.log();
   }
 }
@@ -345,7 +345,7 @@ function importPack() {
   if (!zipPath) {
     console.log("\n  Usage: npx secure-repo import <path-to-zip>\n");
     console.log("  Offline alternative to: npx secure-repo init --key <key>");
-    console.log("  Get the pro pack at: https://polar.sh/sebiomoa\n");
+    console.log("  Get the pro pack at: https://polar.sh/third-space-labs\n");
     return;
   }
 

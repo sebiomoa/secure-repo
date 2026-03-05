@@ -144,7 +144,7 @@ Each file includes:
 - `supabase-rls.sql` — 8 RLS policy patterns
 - `firebase-rules.txt` — 8 Firestore rule patterns
 
-**Get the pro pack:** [sebiomoa.gumroad.com](https://sebiomoa.gumroad.com)
+**Get the pro pack:** [polar.sh/sebiomoa](https://polar.sh/sebiomoa)
 
 After purchase, install with one command:
 

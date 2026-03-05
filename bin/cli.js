@@ -8,8 +8,8 @@ const { execSync } = require("child_process");
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 const FREE_DIR = path.join(TEMPLATES_DIR, "free");
 
-// TODO: Replace with your actual Gumroad product ID after creating the product
-const GUMROAD_PRODUCT_ID = "secure-repo-pro";
+// TODO: Replace with your Polar organization ID after creating the product
+const POLAR_ORGANIZATION_ID = "";
 
 const PRO_ZIP_URL = "https://github.com/sebiomoa/secure-repo/releases/latest/download/secure-repo-pro.zip";
 
@@ -51,7 +51,7 @@ function printHelp() {
     npx secure-repo list              Show available free templates
 
   Options:
-    --key      Your Gumroad license key (from purchase)
+    --key      Your license key (from purchase)
     --force    Overwrite existing files
     --output   Output directory (default: current directory)
 
@@ -60,7 +60,7 @@ function printHelp() {
     AUTH.md        Token handling, session rules, password policy, roles
     API.md         Input validation, rate limiting, error handling
 
-  Pro templates (purchase at https://sebiomoa.gumroad.com):
+  Pro templates (purchase at https://polar.sh/sebiomoa):
     30 additional files — templates, audit checklist, stack presets, examples
     Install with: npx secure-repo init --key <your-license-key>
   `);
@@ -93,7 +93,7 @@ function listTemplates() {
   console.log("    next-route-handler.ts, rate-limit.ts, zod-validate.ts");
   console.log("    supabase-rls.sql, firebase-rules.txt");
 
-  console.log("\n  Get pro: https://sebiomoa.gumroad.com\n");
+  console.log("\n  Get pro: https://polar.sh/sebiomoa\n");
 }
 
 function getArg(flag) {
@@ -129,19 +129,22 @@ function copyFiles(srcDir, destDir, force) {
 }
 
 // ============================================================
-// Gumroad license verification
+// Polar license verification
 // ============================================================
 function verifyLicense(licenseKey) {
   return new Promise((resolve, reject) => {
-    const postData = `product_id=${GUMROAD_PRODUCT_ID}&license_key=${encodeURIComponent(licenseKey)}`;
+    const postData = JSON.stringify({
+      key: licenseKey,
+      organization_id: POLAR_ORGANIZATION_ID,
+    });
 
     const req = https.request(
       {
-        hostname: "api.gumroad.com",
-        path: "/v2/licenses/verify",
+        hostname: "api.polar.sh",
+        path: "/v1/users/license-keys/validate",
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
           "Content-Length": Buffer.byteLength(postData),
         },
       },
@@ -151,10 +154,11 @@ function verifyLicense(licenseKey) {
         res.on("end", () => {
           try {
             const json = JSON.parse(data);
-            if (json.success) {
+            if (json.status === "granted" || json.status === "active") {
               resolve(json);
             } else {
-              reject(new Error(json.message || "Invalid license key"));
+              const msg = typeof json.detail === "string" ? json.detail : "Invalid license key";
+              reject(new Error(msg));
             }
           } catch {
             reject(new Error("Failed to verify license"));
@@ -284,7 +288,7 @@ async function init() {
       console.log("  License valid!\n");
     } catch (err) {
       console.log(`\n  License verification failed: ${err.message}`);
-      console.log("  Purchase at: https://sebiomoa.gumroad.com\n");
+      console.log("  Purchase at: https://polar.sh/sebiomoa\n");
       process.exit(1);
     }
 
@@ -328,7 +332,7 @@ async function init() {
     console.log("    1. Customize the templates for your project");
     console.log("    2. Run: npx secure-repo audit");
     console.log("    3. Get pro templates: npx secure-repo init --key <your-key>");
-    console.log("       Purchase at: https://sebiomoa.gumroad.com");
+    console.log("       Purchase at: https://polar.sh/sebiomoa");
     console.log();
   }
 }
@@ -342,7 +346,7 @@ function importPack() {
   if (!zipPath) {
     console.log("\n  Usage: npx secure-repo import <path-to-zip>\n");
     console.log("  Offline alternative to: npx secure-repo init --key <key>");
-    console.log("  Get the pro pack at: https://sebiomoa.gumroad.com\n");
+    console.log("  Get the pro pack at: https://polar.sh/sebiomoa\n");
     return;
   }
 

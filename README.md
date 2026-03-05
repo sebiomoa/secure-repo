@@ -1,5 +1,7 @@
 # ShipSecure
 
+[Website](https://shipsecure.sebiomo.com) | [Get the Pro Pack](https://buy.polar.sh/polar_cl_q7Wa3Gcng42437OoTx4wHVNyMMyYv0WbtobUv145EZH)
+
 **Drop production-grade security standards into any repository in 30 seconds.**
 
 ```bash

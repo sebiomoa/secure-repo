@@ -93,13 +93,15 @@ Every template is:
 
 ## What You Get (Free)
 
-Three templates that cover the foundations:
+Four templates that cover the foundations:
 
 **SECURITY.md** — No secrets in code. Privileged keys server-side only. Database access control mandatory. Server endpoints for all writes. Incident response steps.
 
 **AUTH.md** — JWT verification rules. Token storage (httpOnly cookies, not localStorage). Password hashing (bcrypt/argon2). Rate limiting on login. Session revocation. Role-based access.
 
 **API.md** — Input validation on every endpoint. Rate limiting on all public routes. Error responses that don't leak internals. Endpoint conventions. CORS rules. Pagination enforcement.
+
+**ACCESSIBILITY.md** — WCAG 2.1 AA compliance. Semantic HTML. Keyboard navigation. Screen reader support. Color contrast. Font sizes. Touch targets.
 
 Each file includes:
 - Rules marked "MUST FOLLOW"
@@ -181,12 +183,12 @@ npx secure-repo list              # Show all available templates
 | | Free | Pro Pack |
 |--|------|---------|
 | Security audit command | Included | Included |
-| Core security policies (3 files) | Included | Included |
+| Core security policies (4 files) | Included | Included |
 | Deep engineering standards (18 files) | - | Included |
 | 100+ point audit checklist | - | Included |
 | Stack presets (Supabase, Firebase) | - | Included |
 | Code examples (5 files) | - | Included |
-| **Total policy files** | **3** | **30** |
+| **Total policy files** | **4** | **31** |
 
 ---
 

@@ -214,6 +214,31 @@ function downloadProZip(destPath, licenseKey) {
 }
 
 // ============================================================
+// Detect stack from package.json dependencies
+// ============================================================
+function detectStacks(projectDir) {
+  const pkgPath = path.join(projectDir, "package.json");
+  if (!fs.existsSync(pkgPath)) return [];
+
+  try {
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+    const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
+    const stacks = [];
+
+    if (allDeps["@supabase/supabase-js"] || allDeps["@supabase/ssr"] || allDeps["@supabase/auth-helpers-nextjs"]) {
+      stacks.push("supabase");
+    }
+    if (allDeps["firebase"] || allDeps["firebase-admin"] || allDeps["firebase-functions"]) {
+      stacks.push("firebase");
+    }
+
+    return stacks;
+  } catch {
+    return [];
+  }
+}
+
+// ============================================================
 // Extract zip and install pro templates
 // ============================================================
 function installFromZip(zipPath, outputDir, force) {
@@ -244,13 +269,18 @@ function installFromZip(zipPath, outputDir, force) {
       totalSkipped += r.skipped;
     }
 
-    // Copy presets
+    // Copy presets — only install presets matching detected stack
     const presetsDir = path.join(tempDir, "presets");
     if (fs.existsSync(presetsDir)) {
+      const detectedStacks = detectStacks(outputDir);
       const presets = fs.readdirSync(presetsDir).filter((f) =>
         fs.statSync(path.join(presetsDir, f)).isDirectory()
       );
       presets.forEach((preset) => {
+        if (detectedStacks.length > 0 && !detectedStacks.includes(preset)) {
+          console.log(`\n  Preset: ${preset} (skipped — not detected in package.json)`);
+          return;
+        }
         const presetDest = path.join(outputDir, `${preset}-preset`);
         console.log(`\n  Preset: ${preset} (-> ${preset}-preset/)`);
         const r = copyFiles(path.join(presetsDir, preset), presetDest, force);
@@ -344,9 +374,20 @@ function writeAgentFiles(outputDir, force) {
     const dir = path.dirname(fullPath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    if (fs.existsSync(fullPath) && !force) {
-      console.log(`    [skip] ${filePath} (${name}) — use --force to overwrite`);
-      skipped++;
+    if (fs.existsSync(fullPath)) {
+      const existing = fs.readFileSync(fullPath, "utf8");
+      const isShipSecureBoilerplate = existing.includes("# Security Policies — MUST READ") && existing.includes("ShipSecure");
+      if (isShipSecureBoilerplate && force) {
+        fs.writeFileSync(fullPath, AGENT_INSTRUCTION);
+        console.log(`    [done] ${filePath} (${name})`);
+        written++;
+      } else if (isShipSecureBoilerplate) {
+        console.log(`    [skip] ${filePath} (${name}) — use --force to overwrite`);
+        skipped++;
+      } else {
+        console.log(`    [skip] ${filePath} (${name}) — existing content detected, won't overwrite`);
+        skipped++;
+      }
     } else {
       fs.writeFileSync(fullPath, AGENT_INSTRUCTION);
       console.log(`    [done] ${filePath} (${name})`);
@@ -569,9 +610,22 @@ function audit() {
   envFiles.forEach((envFile) => {
     const envPath = path.join(targetDir, envFile);
     if (fs.existsSync(envPath)) {
-      console.log(`    [FAIL] ${envFile} exists in repo — may contain secrets`);
-      issues++;
-      envFilesFound++;
+      // Check if file is git-ignored before flagging
+      let isIgnored = false;
+      try {
+        execSync(`git check-ignore -q "${envPath}"`, { stdio: "pipe" });
+        isIgnored = true;
+      } catch {
+        // exit code 1 = not ignored
+      }
+      if (isIgnored) {
+        console.log(`    [pass] ${envFile} exists but is gitignored`);
+        passed++;
+      } else {
+        console.log(`    [FAIL] ${envFile} exists and is NOT gitignored — may contain secrets`);
+        issues++;
+        envFilesFound++;
+      }
     }
   });
   if (envFilesFound === 0) {

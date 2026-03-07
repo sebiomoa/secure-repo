@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.3.0] - 2026-03-07
+
+### Fixed
+- Agent instruction files (CLAUDE.md, .cursorrules, etc.) no longer overwrite existing user content — only writes if file doesn't exist or contains ShipSecure boilerplate
+- `.env.local` false positive — audit now uses `git check-ignore` to verify if env files are gitignored before flagging
+
+### Added
+- Stack preset detection — `init --key` reads `package.json` dependencies and only installs relevant presets (Supabase, Firebase) instead of all
+
+---
+
 ## [1.2.0] - 2026-03-05
 
 ### Added

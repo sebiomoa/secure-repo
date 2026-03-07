@@ -620,7 +620,6 @@ function audit() {
       }
       if (isIgnored) {
         console.log(`    [pass] ${envFile} exists but is gitignored`);
-        passed++;
       } else {
         console.log(`    [FAIL] ${envFile} exists and is NOT gitignored — may contain secrets`);
         issues++;

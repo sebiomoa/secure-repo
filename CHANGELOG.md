@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.3.1] - 2026-03-07
+
+### Fixed
+- Audit score no longer exceeds 100 — gitignored env files no longer inflate the passed count
+
+---
+
 ## [1.3.0] - 2026-03-07
 
 ### Fixed
